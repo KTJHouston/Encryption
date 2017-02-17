@@ -2,20 +2,21 @@ import java.util.ArrayList;
 
 public class Enc {
 
-	double p, q, N, phi, e, d;
+	long p, q, N, phi, e, d;
 	
 	/**
 	 * Constructor for Encryption
 	 * @param p prime number
 	 * @param q another prime number
 	 */
-	public Enc( double p, double q ) {
+	public Enc( long p, long q ) {
 		this.p = p;
 		this.q = q;
 		N = p * q;
 		phi = ( p - 1 ) * ( q - 1 );
 		e = gete( p - 1, q - 1 );
-		gcd( 3, 4 );
+		System.out.println(e);
+		//gcd( 3, 4 );
 	}
 	
 	/**
@@ -24,51 +25,51 @@ public class Enc {
 	 * @param qmin q - 1
 	 * @return e such that gcd( phi, e ) = 1
 	 */
-	public double gete( double pmin, double qmin ) {
-		ArrayList<Integer> pFactors = new ArrayList<Integer>(), qFactors = new ArrayList<Integer>();
+	public long gete( long pmin, long qmin ) {
+		ArrayList<Long> pFactors = new ArrayList<Long>(), qFactors = new ArrayList<Long>();
 		while( pmin % 2 == 0 ) {
 			pmin /= 2;
 			if( pFactors.size() == 0 ) {
-				pFactors.add(2);
+				pFactors.add((long)2);
 			}
 		}
 		while( qmin % 2 == 0 ) {
 			qmin /= 2;
 			if( qFactors.size() == 0 ) {
-				qFactors.add(2);
+				qFactors.add((long)2);
 			}
 		}
-		for( double i = 3; i <= Math.sqrt(pmin); i += 2 ) {
+		for( long i = 3; i <= Math.sqrt(pmin); i += 2 ) {
 			while( pmin % i == 0 ) {
 				pmin /= i;
 				if( pFactors.get( pFactors.size() - 1 ) != i ) {
-					pFactors.add((int)i);
+					pFactors.add((long)i);
 				}
 			}
 		}
-		for( double i = 3; i <= Math.sqrt(qmin); i += 2 ) {
+		for( long i = 3; i <= Math.sqrt(qmin); i += 2 ) {
 			if( qmin % i == 0 ) {
 				qmin /= i;
 				if( qFactors.get( qFactors.size() - 1 ) != i ) {
-					qFactors.add((int)i);
+					qFactors.add((long)i);
 				}
 			}
 		}
 		if( pmin > 1 ) {
-			pFactors.add((int)pmin);
+			pFactors.add((long)pmin);
 		}
 		if( qmin > 1 ) {
-			qFactors.add((int)qmin);
+			qFactors.add((long)qmin);
 		}
 		//put both facts into one array list:
-		ArrayList<Integer> factors = pFactors;
-		for( int q : qFactors ) {
-			factors.add(q);
+		ArrayList<Long> factors = pFactors;
+		for( long q : qFactors ) {
+			factors.add((long)q);
 		}
 		//find e such that gcd( phi, e ) = 1:
-		int e = 1, max = (int)Math.sqrt(phi);
+		long e = 1, max = (long)Math.sqrt(phi);
 		boolean timesTwo = true;
-		for( int f : factors) {
+		for( long f : factors) {
 			if( f == 2 ) {
 				timesTwo = false;
 			}
@@ -76,9 +77,9 @@ public class Enc {
 		if(timesTwo) {
 			e *= 2;
 		}
-		for( double i = 3; e < max; i+=2 ) {
+		for( long i = 3; e < max; i+=2 ) {
 			boolean mult = true;
-			for( int f : factors) {
+			for( long f : factors) {
 				if( i % f == 0 ) {
 					mult = false;
 				}
